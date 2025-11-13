@@ -41,7 +41,7 @@ const layout = ({
 
       <div className='grid grid-cols-4'>
 
-      <div className='col-span-1 h-screen border-r '>
+      <div className='col-span-1 w-72 h-screen border-r'>
         <Sidebar/>
       </div>
 

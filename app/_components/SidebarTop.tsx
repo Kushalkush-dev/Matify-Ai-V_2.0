@@ -72,7 +72,7 @@ const SidebarTop = () => {
           <Image className='mt-1' src={"/whisprOutLogo.png"} width={50} height={50} alt='logo' />
 
           <div className='flex items-center gap-8'>
-            <h2 className='flex items-center font-bold text-xl'>MY Chapters</h2>
+            <h2 className='flex items-center font-bold text-md'>MY Chapters</h2>
             <ChevronDown size={25} />
           </div>
 
@@ -132,7 +132,7 @@ const SidebarTop = () => {
 
 
 
-        <div className='flex m-3 rounded-lg p-2 gap-3 items-center bg-gray-300/40 '>
+        <div className='flex h-full m-3 rounded-lg p-2 gap-3 items-center bg-gray-300/40 '>
           <LayoutList/>
           <h2 className='text-sm font-bold'>All Volumes</h2>
         </div>
