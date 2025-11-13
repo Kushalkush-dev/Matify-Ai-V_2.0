@@ -3,7 +3,7 @@ import { api } from '@/convex/_generated/api'
 import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { useConvex } from 'convex/react'
-import { ChevronDown, ChevronDownCircle, FileInput, LogIn, LogOut, Settings } from 'lucide-react'
+import { ChevronDown, ChevronDownCircle, FileInput, LayoutList, LogIn, LogOut, Settings } from 'lucide-react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
@@ -63,9 +63,11 @@ const SidebarTop = () => {
 
 
   return (
+
+    <div  >
     <Popover>
       <PopoverTrigger>
-        <div className='flex items-center gap-5 p-3 m-2 rounded-md hover:bg-gray-300/50'>
+        <div className='flex items-center gap-5 p-3 m-2  rounded-md hover:bg-gray-300/50'>
 
           <Image className='mt-1' src={"/whisprOutLogo.png"} width={50} height={50} alt='logo' />
 
@@ -76,7 +78,7 @@ const SidebarTop = () => {
 
         </div>
       </PopoverTrigger>
-      <PopoverContent className='p-5 ml-10 bg-slate-100 rounded-lg w-72 shadow-lg'>
+      <PopoverContent className='p-5 ml-8 bg-slate-100 rounded-lg w-72 shadow-lg'>
 
         <div className='flex flex-col gap-2'>
 
@@ -127,6 +129,16 @@ const SidebarTop = () => {
 
       </PopoverContent>
     </Popover>
+
+
+
+        <div className='flex m-3 rounded-lg p-2 gap-3 items-center bg-gray-300/40 '>
+          <LayoutList/>
+          <h2 className='text-sm font-bold'>All Volumes</h2>
+        </div>
+    </div>
+
+   
 
 
 
