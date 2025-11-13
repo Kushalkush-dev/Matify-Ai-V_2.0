@@ -1,4 +1,5 @@
 "use client"
+import Sidebar from '@/app/_components/Sidebar';
 import { api } from '@/convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useConvex } from 'convex/react';
@@ -36,7 +37,22 @@ const layout = ({
 
 
   return (
-    <div>{children}</div>
+    <div>
+
+      <div className='grid grid-cols-4'>
+
+      <div className='col-span-1 h-screen border-r '>
+        <Sidebar/>
+      </div>
+
+      <div className='col-span-3'>
+      {children}
+      </div>
+      
+      </div>
+      </div>
+      
+      
   )
 }
 
