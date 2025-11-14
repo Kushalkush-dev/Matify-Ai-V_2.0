@@ -1,8 +1,104 @@
-import React from 'react'
+import { Flag, Github, LogOut } from 'lucide-react'
+import React, { useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from '@/components/ui/button'
+import { DialogClose } from '@radix-ui/react-dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const SideBarBottom = () => {
+
+const [volume, setvolume] = useState('')
+
+const menus=[
+  {
+    title:"Getting Started",
+    icon:Flag,
+    
+  },
+   {
+    title:"GitHub",
+    icon:Github,
+    
+  },
+  
+  {
+    title:"Logout",
+    icon:LogOut
+  }
+]
+
+
   return (
-    <div>SideBarBottom</div>
+    
+   <div>
+
+    <div className='flex flex-col gap-2 p-3 '>
+      
+    {menus.map((menu,idx)=>(
+      <div className='flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
+        <menu.icon size={20}/>
+        <h2 className='text-sm'>{menu?.title}</h2>
+      </div>
+    ))}
+
+     <Dialog>
+      <DialogTrigger asChild>
+        <Button className='bg-blue-500 text-white' variant="outline">Create Volume</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Create a New Volume </DialogTitle>
+          <DialogDescription>
+            Create a volume with just a click.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center gap-2">
+          <div className="grid flex-1 gap-2">
+            <Label htmlFor="link" className="sr-only">
+              Link
+            </Label>
+            <Input
+              value={volume}
+              onChange={(e)=>setvolume(e.target.value)}
+              placeholder='Enter the Volume Title'
+            />
+          </div>
+        </div>
+        <DialogFooter className="sm:justify-end">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Create
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+      <div className='w-full h-4 mt-2 bg-gray-300 rounded-full'>
+        <div className='w-[90%] h-4 bg-red-500 rounded-full'></div>
+    </div>
+    
+    
+      <h2 className='text-[12px] mt-2'>
+        <strong>4</strong> out of <strong>5</strong> files used</h2>
+      <h2 className='text-[12px] '>Upgrade your plan for unlimited access.</h2>  
+
+      
+    </div>
+
+   </div>
+
+
+
   )
 }
 
