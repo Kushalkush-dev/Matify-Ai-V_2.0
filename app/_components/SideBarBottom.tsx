@@ -1,5 +1,6 @@
+"use client"
 import { Flag, Github, LogOut } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -14,7 +15,7 @@ import { DialogClose } from '@radix-ui/react-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
-import { useMutation } from 'convex/react'
+import { useConvex, useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
 
@@ -40,22 +41,44 @@ const menus=[
     icon:LogOut
   }
 ]
-
+const convex=useConvex()
 const createnewVolume=useMutation(api.volume.createVolume)
+
+
+useEffect(()=>{
+  if(user && user.email){
+    getAllVolumes()
+  }
+},[user])
+
+
+const getAllVolumes=async()=>{
+  try {
+    const res=await convex.query(api.volume.getTotalVolumes,{createdBy:user.email})
+    console.log("All Volumes",res);
+    
+  } catch (error) {
+    console.log("Error fetching all volumes",error);
+  }
+}
 
 
 
 const createVolume=async()=>{
 
   try {
-   if(user){
-    createnewVolume({
+   if(user && user.email){
+   await createnewVolume({
       volumeTitle:volumeName,
       chapterId:activeChapter._id,
       document:"",
       whiteboard:"",
-      createdBy:user?.email
+      createdBy:user.email
     })
+   
+
+    getAllVolumes()
+    
   } 
 
   toast.success("Volume Created Successfully")
@@ -65,6 +88,11 @@ const createVolume=async()=>{
   toast.error("Error creating volume")
   
 }
+
+
+
+
+
 
 
 }
@@ -117,7 +145,10 @@ const createVolume=async()=>{
     </Dialog>
 
       <div className='w-full h-4 mt-2 bg-gray-300 rounded-full'>
-        <div className='w-[90%] h-4 bg-red-500 rounded-full'></div>
+        <div className='w-[90%] h-4 bg-red-500 rounded-full' 
+        style={{
+          width:"80%"
+        }}></div>
     </div>
     
     
