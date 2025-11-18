@@ -44,7 +44,7 @@ const menus=[
     <div className='flex flex-col gap-2 p-3 '>
       
     {menus.map((menu,idx)=>(
-      <div className='flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
+      <div key={idx} className='flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
         <menu.icon size={20}/>
         <h2 className='text-sm'>{menu?.title}</h2>
       </div>

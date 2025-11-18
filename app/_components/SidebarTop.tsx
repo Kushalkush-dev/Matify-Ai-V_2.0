@@ -13,12 +13,13 @@ export interface TEAM {
   _id: String
 }
 
-const SidebarTop = () => {
+const SidebarTop = ({activeChapter,setActiveChapter}:any) => {
 
   const convex = useConvex()
   const { user }: any = useKindeBrowserClient()
 
   const [chapterList, setchapterList] = useState<TEAM[]>()
+  const [selectedChapter, setselectedChapter] = useState<TEAM>()
 
 
 
@@ -29,6 +30,23 @@ const SidebarTop = () => {
       
     }
   }, [user])
+
+  useEffect(()=>{
+    if(chapterList && chapterList?.length>0){
+      setActiveChapter(chapterList[0])
+    }
+
+  },[chapterList])
+
+
+  useEffect(()=>{
+    if(selectedChapter){
+      setActiveChapter(selectedChapter)
+    }
+
+  },[selectedChapter])
+
+
 
   const getChapters = async () => {
     try {
@@ -44,6 +62,8 @@ const SidebarTop = () => {
 
     }
   }
+
+  
 
   const popupcontent = [
     {
@@ -83,10 +103,10 @@ const SidebarTop = () => {
         <div className='flex flex-col gap-2'>
 
           {chapterList?.map((chapter, idx) => (
-
-            <h2 key={idx} className='p-2 hover:bg-blue-500
+            
+            <h2 key={idx} onClick={()=>setselectedChapter(chapter)}  className={`p-2 hover:bg-blue-500
                          hover:text-white
-                         rounded-lg mb-1 cursor-pointer '>{chapter.title}</h2>
+                         rounded-lg mb-1 cursor-pointer ${activeChapter && activeChapter?._id == chapter?._id && "text-white bg-blue-500"} `}>{chapter.title}</h2>
 
           ))}
 
