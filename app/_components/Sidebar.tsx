@@ -21,7 +21,7 @@ const Sidebar = () => {
         </div>
 
 
-        <SideBarBottom/>
+        <SideBarBottom activeChapter={activeChapter}/>
       </div>
     </div>
   )

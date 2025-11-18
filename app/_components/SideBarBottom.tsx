@@ -13,10 +13,15 @@ import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { toast } from 'sonner'
 
-const SideBarBottom = () => {
+const SideBarBottom = ({activeChapter}:any) => {
 
-const [volume, setvolume] = useState('')
+const {user}:any=useKindeBrowserClient()
+const [volumeName, setvolumeName] = useState('')
 
 const menus=[
   {
@@ -35,6 +40,34 @@ const menus=[
     icon:LogOut
   }
 ]
+
+const createnewVolume=useMutation(api.volume.createVolume)
+
+
+
+const createVolume=async()=>{
+
+  try {
+   if(user){
+    createnewVolume({
+      volumeTitle:volumeName,
+      chapterId:activeChapter._id,
+      document:"",
+      whiteboard:"",
+      createdBy:user?.email
+    })
+  } 
+
+  toast.success("Volume Created Successfully")
+  
+}catch (error) {
+  console.log("Error creating volume",error);
+  toast.error("Error creating volume")
+  
+}
+
+
+}
 
 
   return (
@@ -67,15 +100,15 @@ const menus=[
               Link
             </Label>
             <Input
-              value={volume}
-              onChange={(e)=>setvolume(e.target.value)}
+              value={volumeName}
+              onChange={(e)=>setvolumeName(e.target.value)}
               placeholder='Enter the Volume Title'
             />
           </div>
         </div>
         <DialogFooter className="sm:justify-end">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button onClick={createVolume} type="button" variant="secondary">
               Create
             </Button>
           </DialogClose>

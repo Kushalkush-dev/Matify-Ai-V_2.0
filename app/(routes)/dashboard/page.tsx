@@ -28,9 +28,9 @@ const page = () => {
 
     if(!res?.length){
       createUser({
-        name:user.given_name,
-        email:user.email,
-        image:user.picture
+        name:user?.given_name,
+        email:user?.email,
+        image:user?.picture
       }).then((res)=>{
         console.log(res);
         
