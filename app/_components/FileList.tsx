@@ -21,6 +21,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useRouter } from 'next/navigation'
 
  
     
@@ -36,6 +37,9 @@ import {
 
 
 const FileList = () => {
+
+
+  const router=useRouter()
 
 
   const {volumesbychapter,setvolumesbychapter}=useContext(Volumescontext)
@@ -101,7 +105,7 @@ useEffect(()=>{
 
     {volumesbychapter && volumesbychapter.map((volume:any,idx:number)=>(
 
-      <tr key={idx} className="*:text-gray-900 *:first:font-sm text-sm  ">
+      <tr onClick={()=>router.push(`/playground/${volume._id}`)} key={idx} className="*:text-gray-900 *:first:font-sm text-sm  ">
         <td className="px-1 py-2 whitespace-nowrap">{volume?.volumeTitle}</td>
         <td className="px-1 py-2 whitespace-nowrap">{ moment(volume?._creationTime).format("MMM Do YYYY")  }</td>
         <td className="px-1 py-2 whitespace-nowrap">{ moment(volume?._creationTime).format("MMM Do YYYY") }</td>
