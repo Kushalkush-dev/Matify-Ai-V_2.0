@@ -1,7 +1,8 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import SidebarTop from './SidebarTop'
 import SideBarBottom from './SideBarBottom'
+import { ActiveChapter } from '../_context/Volumescontext'
 export interface TEAM {
   createdBy: String,
   title: String,
@@ -9,14 +10,15 @@ export interface TEAM {
 }
 const Sidebar = () => {
 
- const [activeChapter,setActiveChapter]=useState<TEAM|any>();
-
+const {activeChapter,setactiveChapter}=useContext(ActiveChapter)
   return (
+
+
     <div>
       <div className='h-screen flex flex-col p-2 '>
 
       <div  className='flex-1'>
-        <SidebarTop activeChapter={activeChapter} setActiveChapter={setActiveChapter}  />
+        <SidebarTop activeChapter={activeChapter} setactiveChapter={setactiveChapter}  />
 
         </div>
 

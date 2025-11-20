@@ -1,6 +1,6 @@
 "use client"
 import { Flag, Github, LogOut } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,7 @@ import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import { useConvex, useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
+import { Volumescontext } from '../_context/Volumescontext'
 
 
 
@@ -41,14 +42,13 @@ const menus=[
     
   },
   
-  {
-    title:"Logout",
-    icon:LogOut
-  }
+
 ]
 const convex=useConvex()
 const createnewVolume=useMutation(api.volume.createVolume)
 
+
+const {volumesbychapter,setvolumesbychapter}=useContext(Volumescontext)
 
 useEffect(()=>{
   if(user && user.email){
@@ -71,7 +71,24 @@ const getAllVolumes=async()=>{
   }
 }
 
+  const getVolumesByChapter=async()=>{
+    try {
+      if(activeChapter && activeChapter._id){
 
+        const res=await convex.query(api.volume.getVolumesByChapter,{chapterId:activeChapter._id})
+        if(res){
+          setvolumesbychapter(res)
+          toast.success("Fetched Volumes for the chapter")
+        }
+      }
+    } catch (error) {
+      console.log("Error fetching the Volumes by chapters",error);
+      toast.error("Could not fetch volumes for the chapter")
+      
+      
+    }
+
+  }
 
 const createVolume=async()=>{
 
@@ -87,6 +104,7 @@ const createVolume=async()=>{
    
 
     getAllVolumes()
+    getVolumesByChapter()
     
   } 
 
@@ -114,11 +132,15 @@ const createVolume=async()=>{
     <div className='flex flex-col gap-2 p-3 '>
       
     {menus.map((menu,idx)=>(
-      <div key={idx} className='flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
+      <div key={idx} className='cursor-pointer flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
         <menu.icon size={20}/>
         <h2 className='text-sm'>{menu?.title}</h2>
       </div>
     ))}
+     <div className='flex cursor-pointer hover:bg-red-500 hover:text-white p-2 rounded-md  items-center gap-2 '>
+        <LogOut size={20}/>
+        <h2 className='text-sm'>Logout</h2>
+      </div>
 
      <Dialog>
       <DialogTrigger asChild>

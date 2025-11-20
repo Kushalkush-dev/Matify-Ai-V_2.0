@@ -13,7 +13,7 @@ export interface TEAM {
   _id: String
 }
 
-const SidebarTop = ({activeChapter,setActiveChapter}:any) => {
+const SidebarTop = ({activeChapter,setactiveChapter}:any) => {
 
   const convex = useConvex()
   const { user }: any = useKindeBrowserClient()
@@ -33,7 +33,7 @@ const SidebarTop = ({activeChapter,setActiveChapter}:any) => {
 
   useEffect(()=>{
     if(chapterList && chapterList?.length>0){
-      setActiveChapter(chapterList[0])
+      setactiveChapter(chapterList[0])
     }
 
   },[chapterList])
@@ -41,7 +41,7 @@ const SidebarTop = ({activeChapter,setActiveChapter}:any) => {
 
   useEffect(()=>{
     if(selectedChapter){
-      setActiveChapter(selectedChapter)
+      setactiveChapter(selectedChapter)
     }
 
   },[selectedChapter])

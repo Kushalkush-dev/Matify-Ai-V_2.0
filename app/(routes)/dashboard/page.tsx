@@ -4,6 +4,8 @@ import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import { useConvex, useMutation } from 'convex/react'
 import React, { useEffect } from 'react'
 import { api } from '@/convex/_generated/api'
+import DashHeader from '@/app/_components/DashHeader'
+import FileList from '@/app/_components/FileList'
 
 const page = () => {
 
@@ -47,8 +49,10 @@ const page = () => {
 
     
       return (
-        <div>
-        <LogoutLink><Button>Logout</Button></LogoutLink>  
+        <div className='py-7 px-5'>
+          <DashHeader/>
+          <FileList/>
+
         </div>
       )
   }
