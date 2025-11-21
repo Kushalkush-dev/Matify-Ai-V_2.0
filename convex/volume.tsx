@@ -52,3 +52,29 @@ export const getVolumesByChapter=query({
     }
   }
 })
+
+
+
+
+export const saveVolume=mutation({
+  args:{
+    _id:v.id('volumes'),
+    document:v.string()
+  },
+  handler:async(ctx,args)=>{
+    try {
+    const res =await ctx.db.patch(args._id,{document:args.document})
+   
+      return res
+
+    
+      
+    } catch (error) {
+
+    }
+    
+      
+  }
+
+  }
+)

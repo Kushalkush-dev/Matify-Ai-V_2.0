@@ -1,18 +1,25 @@
+"use client"
 import Editor from '@/app/_components/Editor'
 import PlaygroundHeader from '@/app/_components/PlaygroundHeader'
-import React from 'react'
+import React, { useState } from 'react'
 
 
-const page = () => {
+const page = ({params}:any) => {
+  
+  const [save, setsave] = useState(false)
+
+  
+
+
   return (
     <div>
-      <PlaygroundHeader />
+      <PlaygroundHeader onSave={()=>setsave(!save)} />
 
 
       <div className='grid md:grid-cols-2 p-2 grid-cols-1 w-full'>
 
         <div className=' h-screen'>
-          <Editor/>
+          <Editor params={params.volumeId} saveClick={save}/>
         </div>
 
 

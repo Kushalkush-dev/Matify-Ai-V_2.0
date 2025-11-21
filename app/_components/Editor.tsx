@@ -1,11 +1,14 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import EditorjsList from '@editorjs/list';
 import Quote from '@editorjs/quote';
 import ColorPicker from 'editorjs-color-picker';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { toast } from 'sonner';
 
 
 const initialDocument = {
@@ -22,7 +25,7 @@ const initialDocument = {
     ,
     {
       data: {
-       
+
         level: 4,
       },
       id: "1234",
@@ -34,14 +37,48 @@ const initialDocument = {
 
 
 
-const Editor = () => {
+const Editor = ({ saveClick,params}: any) => {
 
-  useEffect(() => {
-    initalizeEditor()
-  }, [])
+
 
   const [initalDoc, setinitalDoc] = useState(initialDocument)
 
+
+
+  const ref = useRef<EditorJS>()
+
+  const saveDocumentDB=useMutation(api.volume.saveVolume);
+
+
+  useEffect(() => {
+
+     saveDoc()
+     
+
+  }, [saveClick])
+
+
+  const saveDoc = () => {
+
+    if (ref.current) {
+      ref.current.save().then((outputData) => {
+
+        
+          saveDocumentDB(
+          {
+            _id:params,
+            document: JSON.stringify(outputData)  ,
+          }
+         
+        ).then((res)=>toast.success("Updated Successfully")).catch((err)=>toast.error("Error saving Document"))
+      
+        
+        console.log('Article data: ', outputData)
+      }).catch((error) => {
+        console.log('Saving failed: ', error)
+      });
+    }
+  }
 
 
 
@@ -60,7 +97,7 @@ const Editor = () => {
           inlineToolbar: true,
           config: {
             placeholder: "Enter the Header",
-             defaultLevel: 4,
+            defaultLevel: 4,
           },
         },
         List: {
@@ -87,10 +124,13 @@ const Editor = () => {
       },
     });
 
+    ref.current=editor
 
   }
 
-
+  useEffect(() => {
+    initalizeEditor()
+  }, [])
 
 
   return (
