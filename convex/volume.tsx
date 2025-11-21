@@ -70,7 +70,7 @@ export const saveVolume=mutation({
     
       
     } catch (error) {
-
+       console.log("Error saving documnet",error);
     }
     
       
@@ -78,3 +78,21 @@ export const saveVolume=mutation({
 
   }
 )
+
+
+
+export const getVolumeById=query({
+  args:{
+    _id:v.id("volumes")
+  },
+
+  handler:async(ctx,args)=>{
+    try {
+      const res =ctx.db.get(args._id)
+      return res
+    } catch (error) {
+        console.log("Error fetching Volume",error);
+        
+    }
+  }
+})

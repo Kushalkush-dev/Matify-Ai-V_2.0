@@ -6,7 +6,7 @@ import Header from '@editorjs/header';
 import EditorjsList from '@editorjs/list';
 import Quote from '@editorjs/quote';
 import ColorPicker from 'editorjs-color-picker';
-import { useMutation } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
 
@@ -37,9 +37,13 @@ const initialDocument = {
 
 
 
-const Editor = ({ saveClick,params}: any) => {
+const Editor = ({ saveClick,params,volumeData}: any) => {
 
 
+  useEffect(() => {
+
+  volumeData && initalizeEditor()
+  }, [volumeData])
 
   const [initalDoc, setinitalDoc] = useState(initialDocument)
 
@@ -49,6 +53,8 @@ const Editor = ({ saveClick,params}: any) => {
 
   const saveDocumentDB=useMutation(api.volume.saveVolume);
 
+  const convex=useConvex()
+
 
   useEffect(() => {
 
@@ -57,7 +63,7 @@ const Editor = ({ saveClick,params}: any) => {
 
   }, [saveClick])
 
-
+  
   const saveDoc = () => {
 
     if (ref.current) {
@@ -82,12 +88,16 @@ const Editor = ({ saveClick,params}: any) => {
 
 
 
+  
+
+  
+
   const initalizeEditor = () => {
 
     const editor = new EditorJS({
 
       holder: 'editorjs',
-      data: initalDoc,
+      data: volumeData?.document?JSON.parse(volumeData.document):initalDoc,
 
 
 
@@ -128,9 +138,6 @@ const Editor = ({ saveClick,params}: any) => {
 
   }
 
-  useEffect(() => {
-    initalizeEditor()
-  }, [])
 
 
   return (
