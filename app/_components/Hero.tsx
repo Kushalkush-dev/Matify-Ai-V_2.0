@@ -1,3 +1,4 @@
+import { RegisterLink } from '@kinde-oss/kinde-auth-nextjs'
 import Image from 'next/image'
 import React from 'react'
 
@@ -18,9 +19,9 @@ const Hero = () => {
       </p>
 
       <div className="mt-4 flex gap-4 sm:mt-6">
-        <a className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700" href="#">
-          Get Started
-        </a>
+        
+         <RegisterLink className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700">Get Started</RegisterLink> 
+        
 
         <a className="inline-block rounded border border-gray-200 px-5 py-3 font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-white" href="#">
           Learn More
@@ -28,7 +29,7 @@ const Hero = () => {
       </div>
     </div>
 
-   <Image className=' mt-0' src={"/logoo.png"} width={500} height={500} alt='heroo'/>
+   <Image className='ml-7' src={"/newherov2.png"} width={500} height={500} alt='heroo'/>
     
   </div>
 </section>  )
