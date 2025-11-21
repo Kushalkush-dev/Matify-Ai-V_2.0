@@ -1,4 +1,6 @@
 "use client"
+import AIOutputDisplay from '@/app/_components/AiOutput'
+import Canvas from '@/app/_components/Canvas'
 import Editor from '@/app/_components/Editor'
 import PlaygroundHeader from '@/app/_components/PlaygroundHeader'
 import { api } from '@/convex/_generated/api'
@@ -47,20 +49,20 @@ const page = ({params}:any) => {
       <PlaygroundHeader onSave={()=>setsave(!save)} />
 
 
-      <div className='grid md:grid-cols-2 p-2 grid-cols-1 w-full'>
+      <div className='grid md:grid-cols-5 p-1 grid-cols-1  w-full'>
 
-        <div className=' h-screen'>
+        <div className=' h-screen col-span-2  border-r-slate-600/35 border-r-2 p-3'>
           <Editor params={params.volumeId} volumeData={volumeData} saveClick={save}/>
         </div>
 
 
-        <div className='flex flex-col h-screen bg-green-400'>
-          <div className=''>
-            whiteboard
+        <div className='flex flex-col col-span-3 h-screen p-1  '>
+          <div className='border-b-slate-300/35 border-b-2'>
+           <Canvas/>
           </div>
 
-          <div className=''>
-              Ai
+          <div className='p-2 h-full'>
+             <AIOutputDisplay/>
           </div>
         </div>
 

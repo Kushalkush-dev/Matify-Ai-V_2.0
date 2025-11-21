@@ -89,7 +89,7 @@ const SidebarTop = ({activeChapter,setactiveChapter}:any) => {
       <PopoverTrigger>
         <div className='flex items-center gap-5 p-3 m-2  rounded-md hover:bg-gray-300/50'>
 
-          <Image className='mt-1' src={"/whisprOutLogo.png"} width={50} height={50} alt='logo' />
+          <Image className='mt-1' src={"/logoo.png"} width={60} height={60} alt='logo' />
 
           <div className='flex items-center gap-8'>
             <h2 className='flex items-center font-bold text-md'>MY Chapters</h2>

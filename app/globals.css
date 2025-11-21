@@ -4,6 +4,7 @@
 
 
 
+
 h1.ce-header{
   @apply text-3xl font-bold
 }
@@ -25,6 +26,15 @@ h6.ce-header{
  
 
 
+/* Remove Library button */
+.sidebar-trigger.default-sidebar-trigger {
+  display: none !important;
+}
+
+/* Remove sidebar panel as well (optional) */
+.FixedSideContainer_side_right {
+  display: none !important;
+}
 
 
 

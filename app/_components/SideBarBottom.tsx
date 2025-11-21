@@ -144,12 +144,12 @@ const createVolume=async()=>{
 
      <Dialog>
       <DialogTrigger asChild>
-        <Button className='bg-blue-500 text-white' variant="outline">Create Volume</Button>
+        <Button disabled={allVolumes>=5}  className='bg-blue-500 text-white' variant="outline">Create Volume</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create a New Volume </DialogTitle>
-          <DialogDescription>
+          <DialogDescription> 
             Create a volume with just a click.
           </DialogDescription>
         </DialogHeader>
