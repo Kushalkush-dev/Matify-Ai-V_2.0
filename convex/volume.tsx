@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { asObjectValidator, v } from "convex/values";
 
 export const createVolume=mutation({
   args:{
@@ -94,5 +94,21 @@ export const getVolumeById=query({
         console.log("Error fetching Volume",error);
         
     }
+  }
+})
+
+
+export const updateWhiteboard=mutation({
+  args:{
+    _id:v.id("volumes"),
+    whiteboard:v.string()
+  },
+  handler:async(ctx,args)=>{
+    try {
+      const res=await ctx.db.patch(args._id,{whiteboard:args.whiteboard})
+    } catch (error) {
+      console.log("Error updating whiteboard data",error)
+    }
+
   }
 })
