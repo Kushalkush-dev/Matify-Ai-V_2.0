@@ -145,7 +145,7 @@ const createVolume=async()=>{
 
      <Dialog>
       <DialogTrigger asChild>
-        <Button disabled={allVolumes>=5}  className='bg-blue-500 text-white' variant="outline">Create Volume</Button>
+        <Button disabled={allVolumes>=MAXVolumeConstant.maxfile}  className='bg-blue-500 text-white' variant="outline">Create Volume</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
