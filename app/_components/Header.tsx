@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { LoginLink, RegisterLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 
@@ -11,7 +12,7 @@ const Header = () => {
 
 const {user}=useKindeBrowserClient()
 
-
+const router =useRouter()
 
 return (
 <header className="bg-white">
@@ -52,7 +53,7 @@ return (
         <div className="sm:flex sm:gap-4">
 
         
-          {user?.email ? <Button variant={'outline'} className=''>Go to Dashboard</Button>:  
+          {user?.email ? <Button onClick={()=>router.push("/dashboard")} variant={'outline'} className=''>Go to Dashboard</Button>:  
           
           <>
           
