@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover
 import { useConvex } from 'convex/react'
 import { ChevronDown, ChevronDownCircle, FileInput, LayoutList, LogIn, LogOut, Settings } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export interface TEAM {
@@ -14,12 +15,14 @@ export interface TEAM {
 }
 
 const SidebarTop = ({activeChapter,setactiveChapter}:any) => {
-
+  const router=useRouter()
+  
   const convex = useConvex()
   const { user }: any = useKindeBrowserClient()
 
   const [chapterList, setchapterList] = useState<TEAM[]>()
   const [selectedChapter, setselectedChapter] = useState<TEAM>()
+
 
 
 
@@ -69,7 +72,7 @@ const SidebarTop = ({activeChapter,setactiveChapter}:any) => {
     {
       title: "Create Chapter",
       icon: FileInput,
-      path: "/chapter/create"
+      path: "/project/create"
     },
     {
       title: "Settings",
@@ -119,9 +122,9 @@ const SidebarTop = ({activeChapter,setactiveChapter}:any) => {
         <div className='flex flex-col gap-2 mt-3' >
 
           {popupcontent.map((ele, idx) => (
-            <div key={idx} className='flex hover:bg-gray-500/20  p-2 rounded-md  items-center gap-4 '>
+            <div key={idx} onClick={()=>router.push(ele?.path && ele.path)} className='flex cursor-pointer hover:bg-gray-500/20  p-2 rounded-md  items-center gap-4 '>
               {<ele.icon size={16} />}
-              <h2 className='text-sm'>{ele.title}</h2>
+              <h2  className='text-sm'>{ele.title}</h2>
             </div>
           ))}
 

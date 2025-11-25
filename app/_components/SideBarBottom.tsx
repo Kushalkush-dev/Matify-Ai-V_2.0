@@ -19,6 +19,7 @@ import { useConvex, useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
 import { Volumescontext } from '../_context/Volumescontext'
+import MAXVolumeConstant from '../_constants/MAXVolumeConstant'
 
 
 
@@ -177,14 +178,14 @@ const createVolume=async()=>{
 
       <div className='w-full h-4 mt-2 bg-gray-300 rounded-full'>
         <div className='w-[90%] h-4 bg-red-500 rounded-full' 
-        style={{ width:`${(allVolumes/5)*100}%` }}>
+        style={{ width:`${(allVolumes/MAXVolumeConstant.maxfile)*100}%` }}>
             
         </div>
     </div>
     
     
       <h2 className='text-[12px] mt-2'>
-        <strong>{allVolumes}</strong> out of <strong>5</strong> files used</h2>
+        <strong>{allVolumes}</strong> out of <strong>{MAXVolumeConstant.maxfile}</strong> files used</h2>
       <h2 className='text-[12px] '>Upgrade your plan for unlimited access.</h2>  
 
       

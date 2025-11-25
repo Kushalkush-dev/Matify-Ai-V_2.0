@@ -58,7 +58,7 @@ const page = ({params}:any) => {
 
         <div className='flex flex-col col-span-3 h-screen p-1  '>
           <div className='border-b-slate-300/35 border-b-2'>
-           <Canvas/>
+           <Canvas params={params.volumeId} volumeData={volumeData} saveClick={save} />
           </div>
 
           <div className='p-2 h-full'>

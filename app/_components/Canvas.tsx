@@ -1,9 +1,12 @@
+
 import React, { useEffect, useState } from 'react'
 import { Excalidraw, Footer, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
-const Canvas = ({ params, volumeData, saveClick }: any) => {
+
+
+const Canvas = ({ saveClick,params,volumeData}: any) => {
 
 
 
@@ -13,24 +16,30 @@ const Canvas = ({ params, volumeData, saveClick }: any) => {
 
 
   useEffect(() => {
-    saveCanvasData()
+   
+    if(!params || !canvasData) return;
+
+      saveCanvasData()
+    
 
   }, [saveClick])
 
   const updatecanvas = useMutation(api.volume.updateWhiteboard)
 
   const saveCanvasData = async() => {
+    
     try {
       const res=await updatecanvas({
         _id:params,
-        whiteboard:JSON.stringify(canvasData)
+        whiteboard: JSON.stringify(canvasData)
       })
-      if(res){
 
+      
         toast.success("Canvas saved Successfully")
         console.log(res);
         
-      }
+     
+      
 
   } catch (error) {
     console.log("Error Canvas DB",error);
@@ -42,7 +51,7 @@ const Canvas = ({ params, volumeData, saveClick }: any) => {
 return (
 
   <div className='w-full h-[550px]'  >
-    <Excalidraw theme='light'
+   { volumeData && <Excalidraw theme='light' initialData={{elements:volumeData?.whiteboard && JSON.parse(volumeData?.whiteboard) }}
       onChange={(excalidrawElements, appState, files) => setcanvasData(excalidrawElements)
       }
 
@@ -74,7 +83,7 @@ return (
 
       </Footer>
 
-    </Excalidraw>
+    </Excalidraw>}
 
   </div>
 

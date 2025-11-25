@@ -38,17 +38,17 @@ const router=useRouter()
 
   return (
     <div>
-      <Header />
+      <Header/>
       <div className=' p-4 flex flex-col mt-10 justify-center items-center'>
-        <h2 className='text-[32px] font-bold py-3'>What would you like to call your Project? </h2>
-        <h2 className='text-[20px]  text-gray-500 '>Create a your new project...</h2>
+        <h2 className='text-[32px] font-bold py-3'>What would you like to call your new Chapter? </h2>
+        <h2 className='text-[20px]  text-gray-500 '>Create a your new Chapter...</h2>
 
        <div className='mt-14'>
         <label htmlFor="text" className="relative">
           <input onChange={(e)=>setprojectTitle(e.target.value)} type="text" id="text" placeholder="" className="peer w-80 px-2 py-2 mt-0.5  rounded border-2 border-gray-900 shadow-sm sm:text-sm"/>
 
             <span className="absolute inset-y-0 start-3 -translate-y-5 bg-white px-0.5 text-sm font-medium text-gray-700 transition-transform peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-5">
-             Enter the project Title
+             Enter the Chapter Title
             </span>
         </label>
 

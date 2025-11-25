@@ -100,12 +100,14 @@ export const getVolumeById=query({
 
 export const updateWhiteboard=mutation({
   args:{
-    _id:v.id("volumes"),
+     _id:v.id("volumes"),
     whiteboard:v.string()
   },
   handler:async(ctx,args)=>{
     try {
-      const res=await ctx.db.patch(args._id,{whiteboard:args.whiteboard})
+      const res =await ctx.db.patch(args._id,{whiteboard:args.whiteboard})
+
+      return res;
     } catch (error) {
       console.log("Error updating whiteboard data",error)
     }
