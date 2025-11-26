@@ -8,14 +8,14 @@ import React from 'react'
 
 
 
-const Header = () => {
+const Header = ({className}:any) => {
 
 const {user}=useKindeBrowserClient()
 
 const router =useRouter()
 
 return (
-<header className="bg-white">
+<header className="bg-white "  >
   <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
     <a className="block text-teal-600" href="#">
       <span className="sr-only">Home</span>
@@ -53,7 +53,7 @@ return (
         <div className="sm:flex sm:gap-4">
 
         
-          {user?.email ? <Button onClick={()=>router.push("/dashboard")} variant={'outline'} className=''>Go to Dashboard</Button>:  
+          {user ? <Button onClick={()=>router.push("/dashboard")} variant={'outline'} className=''>Go to Dashboard</Button>:  
           
           <>
           

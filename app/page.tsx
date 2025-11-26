@@ -16,7 +16,7 @@ useEffect(()=>{
 },[user])
 
   return (
-  <div>
+  <div >
 
 
 
