@@ -28,12 +28,7 @@ export async function POST(request) {
     }
     
     const base64image = image.split(",")[1];
-  const contents = [{
-    inlineData: {
-      mimeType: 'image/png',
-      data: base64image,
-    },
-  }]
+
 
 const response = await ai.models.generateContent({
       model: "gemini-2.5-flash", 

@@ -7,15 +7,22 @@ import { api } from '@/convex/_generated/api'
 import { useConvex } from 'convex/react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { aiSolution } from '@/app/_context/Volumescontext';
 
 
 const page = ({params}:any) => {
   
-  const [save, setsave] = useState(false)
+
+  const [save, setsave] = useState(false)  //save button trigger state
+
+  const [Calculate, setCalculate] = useState(false) //calculate button trigger state
 
   const convex=useConvex()
-
+  
   const [volumeData, setvolumeData] = useState<any>()
+
+  const [aianswer,setaianswer]=useState<any>('')
+
 
 
   useEffect(()=>{
@@ -44,21 +51,29 @@ const page = ({params}:any) => {
   }
 
 
+
+
+
   return (
-    <div>
-      <PlaygroundHeader onSave={()=>setsave(!save)} />
+      <aiSolution.Provider value={{aianswer,setaianswer}}>
+    <div className='min-h-screen flex- flex flex-col'>
+      
 
 
-      <div className='grid md:grid-cols-5 p-1 grid-cols-1  w-full'>
 
-        <div className=' h-screen col-span-2  border-r-slate-600/35 border-r-2 p-3'>
+      <PlaygroundHeader onCalculate={()=>setCalculate(!Calculate)} onSave={()=>setsave(!save)} />
+
+
+      <div className='flex-1 grid md:grid-cols-5 p-1 grid-cols-1 w-full'>
+
+        <div className='col-span-2  border-r-slate-600/35 border-r-2 p-3'>
           <Editor params={params.volumeId} volumeData={volumeData} saveClick={save}/>
         </div>
 
 
-        <div className='flex flex-col col-span-3 h-screen p-1  '>
+        <div className='flex flex-col col-span-3 h-full p-1  '>
           <div className='border-b-slate-300/35 border-b-2'>
-           <Canvas params={params.volumeId} volumeData={volumeData} saveClick={save} />
+           <Canvas params={params.volumeId} volumeData={volumeData} saveClick={save} calculateClick={Calculate} />
           </div>
 
           <div className='p-2 h-full'>
@@ -70,6 +85,7 @@ const page = ({params}:any) => {
 
 
     </div>
+      </aiSolution.Provider>
   )
 }
 

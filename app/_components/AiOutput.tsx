@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Bot, Copy, Calculator, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { aiSolution } from '../_context/Volumescontext';
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next';
+
 
 interface AIOutputProps {
   output?: string;
@@ -8,10 +12,18 @@ interface AIOutputProps {
 }
 
 const AIOutputDisplay = ({ output, isGenerating = false }: AIOutputProps) => {
+
+
+  const {aianswer,setaianswer}=useContext(aiSolution)
+
+
+  useEffect(()=>{
+    console.log("AI Answer updated:", aianswer);
+  },[aianswer])
   
   const copyToClipboard = () => {
-    if (!output) return;
-    navigator.clipboard.writeText(output);
+    if (!aianswer) return;
+    navigator.clipboard.writeText(aianswer);
     toast.success("Result copied to clipboard");
   };
 
@@ -28,7 +40,7 @@ const AIOutputDisplay = ({ output, isGenerating = false }: AIOutputProps) => {
 
         <button 
           onClick={copyToClipboard}
-          disabled={!output}
+          disabled={!aianswer}
           className="p-1.5 hover:bg-stone-100 rounded-md transition-colors text-stone-400 hover:text-stone-600 disabled:opacity-50 disabled:cursor-not-allowed"
           title="Copy result"
         >
@@ -37,15 +49,15 @@ const AIOutputDisplay = ({ output, isGenerating = false }: AIOutputProps) => {
       </div>
 
       {/* Content Section */}
-      <div className="relative flex-1 p-4 overflow-y-auto bg-white custom-scrollbar">
-        {output ? (
-          <div className="prose prose-stone prose-sm max-w-none">
+      <div className="relative flex-1 p-4 overflow-y-auto h-full bg-white custom-scrollbar">
+        {aianswer ? (
+          <div className="prose prose-stone prose-sm max-w-none flex justify-center h-full items-center">
             {/* Using whitespace-pre-wrap to preserve formatting. 
-              If your mathematical output uses LaTeX (e.g. $E=mc^2$), 
+              If your mathematical aianswer uses LaTeX (e.g. $E=mc^2$), 
               you might want to wrap this later with a library like 'react-latex' or 'katex'.
             */}
-            <p className="text-sm text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
-              {output}
+            <p className="text-3xl items-start  text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
+              <Latex>{aianswer}</Latex>
             </p>
           </div>
         ) : (

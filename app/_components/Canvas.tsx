@@ -1,12 +1,13 @@
 
-import React, { useEffect, useState } from 'react'
-import { Excalidraw, Footer, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
+import React, { useContext, useEffect, useState } from 'react'
+import { Excalidraw, exportToBlob, Footer, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
+import { aiSolution } from '../_context/Volumescontext';
 
 
-const Canvas = ({ saveClick,params,volumeData}: any) => {
+const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
 
 
 
@@ -15,79 +16,189 @@ const Canvas = ({ saveClick,params,volumeData}: any) => {
   const [canvasData, setcanvasData] = useState<any>()
 
 
-  useEffect(() => {
-   
-    if(!params || !canvasData) return;
+  const [excalidrawAPI, setexcalidrawAPI] = useState<any>(null)
 
-      saveCanvasData()
+
+  const [capturedImage, setcapturedImage] = useState<any>('')
+
+
+  const [latexSolution, setlatexSolution] = useState<any>()
+
+
+  const {aianswer,setaianswer}=useContext(aiSolution)
+
+  const captureCanvasImage=async()=>{
+    if(!excalidrawAPI)return null;
+
+
+    // 1. Get the current image/state of excalidraw
     
+    const elements = excalidrawAPI.getSceneElements();
+    const appState = excalidrawAPI.getAppState();
+    const files = excalidrawAPI.getFiles();
+
+    // 2. Generate the Blobimage which removes unwanted grids and mistakes and returns a plain canvas with user drawn data (Image file)
+    
+    const blob = await exportToBlob({
+      elements,
+      appState: {
+        ...appState,
+        exportWithDarkMode: false, // Force light mode for the image
+        exportBackground: true,
+      },
+      files,
+      mimeType: "image/png",
+      quality: 1,
+    });
+
+
+    //Convert blob image to base64 string 
+
+    return new Promise((resolve) => {
+      const reader=new FileReader()
+      reader.readAsDataURL(blob)
+      reader.onloadend=()=>{
+        const base64Image=reader.result;
+        console.log("Base64 image",base64Image);
+        setcapturedImage(base64Image)
+        resolve(base64Image)
+      }
+    })
+
+
+  }
+
+
+
+
+
+  const AiResponse=async()=>{
+    if(!excalidrawAPI) return;
+
+    
+    try {
+      const base64Image = await captureCanvasImage()
+      const response =await fetch('/api/calculate',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({image:base64Image})
+      })
+      
+      if(response.ok){
+       
+        const data = await response.json();
+        console.log("AI Solution:", data);
+        setlatexSolution(data.solution)
+        setaianswer(data.solution)
+
+        
+      }
+
+    } catch (error) {
+      console.log("Error in AI response",error);
+      
+    }
+
+  }
+
+
+
+  useEffect(()=>{
+
+    setaianswer(latexSolution)
+
+  },[latexSolution])
+
+
+  useEffect(()=>{
+
+    if(!params || !canvasData) return;
+    console.log(capturedImage);
+    
+    AiResponse()
+
+
+  },[calculateClick])
+
+
+
+  useEffect(() => {
+
+    if (!params || !canvasData) return;
+
+    saveCanvasData()
+
+    captureCanvasImage()
+
 
   }, [saveClick])
 
   const updatecanvas = useMutation(api.volume.updateWhiteboard)
 
-  const saveCanvasData = async() => {
-    
+  const saveCanvasData = async () => {
+
     try {
-      const res=await updatecanvas({
-        _id:params,
+      const res = await updatecanvas({
+        _id: params,
         whiteboard: JSON.stringify(canvasData)
       })
 
-      
-        toast.success("Canvas saved Successfully")
-        console.log(res);
-        
-     
-      
 
-  } catch (error) {
-    console.log("Error Canvas DB",error);
-    toast.error("Error saving canvas data to DB")
+      toast.success("Canvas saved Successfully")
+      console.log(res);
+
+
+
+
+    } catch (error) {
+      console.log("Error Canvas DB", error);
+      toast.error("Error saving canvas data to DB")
+    }
   }
-}
 
 
-return (
+  return (
 
-  <div className='w-full h-[550px]'  >
-   { volumeData && <Excalidraw theme='light' initialData={{elements:volumeData?.whiteboard && JSON.parse(volumeData?.whiteboard) }}
-      onChange={(excalidrawElements, appState, files) => setcanvasData(excalidrawElements)
-      }
-
-
-      UIOptions={{
+    <div className='w-full h-[550px]'  >
+      {volumeData && <Excalidraw excalidrawAPI={(api)=>setexcalidrawAPI(api)}  theme='light' initialData={{ elements: volumeData?.whiteboard && JSON.parse(volumeData?.whiteboard) }}
+        onChange={(excalidrawElements, appState, files) => setcanvasData(excalidrawElements)
+        }
 
 
-        canvasActions: {
-          saveToActiveFile: false,
-          loadScene: false,
-          export: false,
-          toggleTheme: false
+        UIOptions={{
 
-        },
-      }} >
-      <WelcomeScreen>
-        <WelcomeScreen.Hints.MenuHint />
-        <WelcomeScreen.Hints.ToolbarHint />
 
-      </WelcomeScreen>
+          canvasActions: {
+            saveToActiveFile: false,
+            loadScene: false,
+            export: false,
+            toggleTheme: false
 
-      <MainMenu>
-        <MainMenu.DefaultItems.ClearCanvas />
-        <MainMenu.DefaultItems.ChangeCanvasBackground />
-        <MainMenu.DefaultItems.Export />
-      </MainMenu>
+          },
+        }} >
+        <WelcomeScreen>
+          <WelcomeScreen.Hints.MenuHint />
+          <WelcomeScreen.Hints.ToolbarHint />
 
-      <Footer>
+        </WelcomeScreen>
 
-      </Footer>
+        <MainMenu>
+          <MainMenu.DefaultItems.ClearCanvas />
+          <MainMenu.DefaultItems.ChangeCanvasBackground />
+          <MainMenu.DefaultItems.Export />
+        </MainMenu>
 
-    </Excalidraw>}
+        <Footer>
 
-  </div>
+        </Footer>
 
-)
+      </Excalidraw>}
+
+    </div>
+
+  )
 }
 
 export default Canvas

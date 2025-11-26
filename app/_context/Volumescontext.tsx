@@ -15,3 +15,8 @@ export const ActiveChapter=createContext<TEAM|any>({})
 
 
 
+
+export const aiSolution=createContext<any>('')
+
+
+
