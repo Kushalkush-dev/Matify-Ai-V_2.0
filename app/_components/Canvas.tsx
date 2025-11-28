@@ -4,7 +4,7 @@ import { Excalidraw, exportToBlob, Footer, MainMenu, WelcomeScreen } from "@exca
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
-import { aiSolution } from '../_context/Volumescontext';
+import { aiGenerating, aiSolution } from '../_context/Volumescontext';
 
 
 const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
@@ -26,6 +26,8 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
 
 
   const {aianswer,setaianswer}=useContext(aiSolution)
+
+  const {isCalculating,setisCalculating}=useContext(aiGenerating)
 
   const captureCanvasImage=async()=>{
     if(!excalidrawAPI)return null;
@@ -77,6 +79,7 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
 
     
     try {
+      setisCalculating(true)
       const base64Image = await captureCanvasImage()
       const response =await fetch('/api/calculate',{
         method:'POST',
@@ -85,6 +88,7 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
         },
         body:JSON.stringify({image:base64Image})
       })
+      console.log(response);
       
       if(response.ok){
        
@@ -92,6 +96,7 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
         console.log("AI Solution:", data);
         setlatexSolution(data.solution)
         setaianswer(data.solution)
+        setisCalculating(false)
 
         
       }

@@ -7,7 +7,7 @@ import { api } from '@/convex/_generated/api'
 import { useConvex } from 'convex/react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { aiSolution } from '@/app/_context/Volumescontext';
+import { aiSolution,aiGenerating } from '@/app/_context/Volumescontext';
 
 
 const page = ({params}:any) => {
@@ -22,6 +22,8 @@ const page = ({params}:any) => {
   const [volumeData, setvolumeData] = useState<any>()
 
   const [aianswer,setaianswer]=useState<any>('')
+
+  const [isCalculating, setisCalculating] = useState<boolean>(false)
 
 
 
@@ -55,7 +57,11 @@ const page = ({params}:any) => {
 
 
   return (
-      <aiSolution.Provider value={{aianswer,setaianswer}}>
+
+    <aiGenerating.Provider value={{isCalculating,setisCalculating}}>
+
+    <aiSolution.Provider value={{aianswer,setaianswer}}>
+    
     <div className='min-h-screen flex- flex flex-col'>
       
 
@@ -86,6 +92,7 @@ const page = ({params}:any) => {
 
     </div>
       </aiSolution.Provider>
+    </aiGenerating.Provider>
   )
 }
 

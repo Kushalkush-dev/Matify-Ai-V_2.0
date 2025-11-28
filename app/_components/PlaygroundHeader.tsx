@@ -1,17 +1,20 @@
 import { Button } from '@/components/ui/button'
-import { Brain, Calculator, Save } from 'lucide-react'
+import { Brain, Calculator, Loader2, Save } from 'lucide-react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useContext } from 'react'
+import { aiGenerating } from '../_context/Volumescontext'
 
 const PlaygroundHeader = ({onSave,onCalculate}:any) => {
+
+  const {isCalculating,setisCalculating}=useContext(aiGenerating);
   return (
     <div className='w-full flex justify-between items-center border-b-2 shadow-sm p-2'>
       <Image src={"/logoo.png"} alt='logo' width={50} height={51} />
 
       <div className=' flex gap-4'>
-      <Button onClick={()=>onCalculate()} className='bg-green-600'> Calculate <Brain/></Button>
+      <Button disabled={isCalculating} onClick={()=>onCalculate()} className='bg-green-600'>{isCalculating ? <Loader2 className='animate-spin'/> :<> Calculate <Brain/></> }  </Button>
 
-      <Button onClick={()=>onSave()} className='bg-yellow-600'>SAVE <Save/></Button>
+      <Button  onClick={()=>onSave()} className='bg-yellow-600'>SAVE <Save/></Button>
 
       </div>
       
