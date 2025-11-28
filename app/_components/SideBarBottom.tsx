@@ -1,6 +1,6 @@
 "use client"
 import { Flag, Github, LogOut } from 'lucide-react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -14,12 +14,13 @@ import { Button } from '@/components/ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
+import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import { useConvex, useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
 import { Volumescontext } from '../_context/Volumescontext'
 import MAXVolumeConstant from '../_constants/MAXVolumeConstant'
+import { useRouter } from 'next/navigation'
 
 
 
@@ -31,15 +32,20 @@ const [volumeName, setvolumeName] = useState('')
 
 const[allVolumes,setallVolumes]=useState<any>(0)
 
+const router=useRouter()
+
+
 const menus=[
   {
     title:"Getting Started",
     icon:Flag,
+    path:""
     
   },
    {
     title:"GitHub",
     icon:Github,
+    path:"https://github.com/Kushalkush-dev/Matify-Ai-V_2.0"
     
   },
   
@@ -79,7 +85,7 @@ const getAllVolumes=async()=>{
         const res=await convex.query(api.volume.getVolumesByChapter,{chapterId:activeChapter._id})
         if(res){
           setvolumesbychapter(res)
-          toast.success("Fetched Volumes for the chapter")
+          console.log("Fetched Volumes for the chapter");
         }
       }
     } catch (error) {
@@ -95,7 +101,8 @@ const createVolume=async()=>{
 
   try {
    if(user && user.email){
-   await createnewVolume({
+    
+  const res= await createnewVolume({
       volumeTitle:volumeName,
       chapterId:activeChapter._id,
       document:"",
@@ -103,10 +110,12 @@ const createVolume=async()=>{
       createdBy:user.email
     })
    
+    if(res){
+      getAllVolumes()
+      getVolumesByChapter()
 
-    getAllVolumes()
-    getVolumesByChapter()
-    
+
+    }
   } 
 
   toast.success("Volume Created Successfully")
@@ -133,15 +142,18 @@ const createVolume=async()=>{
     <div className='flex flex-col gap-2 p-3 '>
       
     {menus.map((menu,idx)=>(
-      <div key={idx} className='cursor-pointer flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
+      <div key={idx} onClick={()=>menu.path && router.push(menu.path)} className='cursor-pointer flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2 '>
         <menu.icon size={20}/>
         <h2 className='text-sm'>{menu?.title}</h2>
       </div>
     ))}
+    <LogoutLink>
+
      <div className='flex cursor-pointer hover:bg-red-500 hover:text-white p-2 rounded-md  items-center gap-2 '>
         <LogOut size={20}/>
         <h2 className='text-sm'>Logout</h2>
       </div>
+    </LogoutLink>
 
      <Dialog>
       <DialogTrigger asChild>
@@ -168,7 +180,7 @@ const createVolume=async()=>{
         </div>
         <DialogFooter className="sm:justify-end">
           <DialogClose asChild>
-            <Button onClick={createVolume} type="button" variant="secondary">
+            <Button disabled={!volumeName} onClick={createVolume} type="button" variant="secondary" className='bg-green-600/80 text-white hover:bg-green-700'>
               Create
             </Button>
           </DialogClose>

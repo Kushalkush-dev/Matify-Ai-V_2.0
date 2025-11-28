@@ -10,7 +10,7 @@ const DashHeader = () => {
 
       <div className='flex gap-2 items-center '>
       <Input type='text' placeholder='Search volumes' className='w-64 bg-slate-100' />
-     <Link href={"https://github.com/Kushalkush-dev/Matify-Ai-V_2.0"} >
+     <Link href={"https://github.com/Kushalkush-dev/Matify-Ai-V_2.0"} target='_blank' >
      <Button><Github/>Github</Button>
      </Link> 
       

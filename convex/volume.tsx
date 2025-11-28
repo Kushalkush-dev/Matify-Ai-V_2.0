@@ -114,3 +114,22 @@ export const updateWhiteboard=mutation({
 
   }
 })
+
+
+
+export const deleteVolume=mutation({
+  args:{
+    _id:v.id("volumes")
+  },
+  handler:async(ctx,args)=>{
+
+    try {
+     const res= await ctx.db.delete(args._id)
+      
+      return res
+    } catch (error) {
+      console.log("Error deleting volume api",error);
+    }
+
+  }
+})

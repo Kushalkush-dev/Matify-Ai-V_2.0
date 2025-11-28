@@ -3,7 +3,7 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import { Volumescontext } from '../_context/Volumescontext'
-import { useConvex } from 'convex/react'
+import { useConvex, useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { ActiveChapter } from '../_context/Volumescontext'
 import { toast } from 'sonner'
@@ -70,7 +70,7 @@ useEffect(()=>{
         const res=await convex.query(api.volume.getVolumesByChapter,{chapterId:activeChapter._id})
         if(res){
           setvolumesbychapter(res)
-          toast.success("Fetched Volumes for the chapter")
+          console.log("Fetched Volumes for the chapter filelist Component");
         }
       }
     } catch (error) {
@@ -79,6 +79,28 @@ useEffect(()=>{
       
       
     }
+
+  }
+
+
+  const deletevolumeDb=useMutation(api.volume.deleteVolume)
+
+  const deleteVolume=async(volumeId:any)=>{
+
+    try {
+
+      await deletevolumeDb({
+        _id:volumeId
+      })
+      toast.success("Deleted Successfully")
+      getVolumesByChapter()
+    } catch (error) {
+      console.log("Error deleting Volume");
+      toast.error("Volume Deletion Failed")
+      
+    }
+
+
 
   }
 
@@ -105,12 +127,12 @@ useEffect(()=>{
 
     {volumesbychapter && volumesbychapter.map((volume:any,idx:number)=>(
 
-      <tr  onClick={()=>router.push(`/playground/${volume._id}`)} key={idx} className="*:text-gray-900 *:first:font-sm text-sm  cursor-pointer ">
-        <td className="px-1 py-2 whitespace-nowrap">{volume?.volumeTitle}</td>
+      <tr  key={idx} className="*:text-gray-900 *:first:font-sm text-sm  ">
+        <td  onClick={()=>router.push(`/playground/${volume._id}`)} className="px-1 py-2 whitespace-nowrap  hover:text-emerald-500 cursor-pointer ">{volume?.volumeTitle}</td>
         <td className="px-1 py-2 whitespace-nowrap">{ moment(volume?._creationTime).format("MMM Do YYYY")  }</td>
         <td className="px-1 py-2 whitespace-nowrap">{ moment(volume?._creationTime).format("MMM Do YYYY") }</td>
         <td className="px-3 py-2 whitespace-nowrap"><Image className='rounded-full' src={user?.picture} width={30} height={30} alt='user'/></td>
-        <td className="px-1 py-2 whitespace-nowrap">
+        <td className="px-1 py-2 whitespace-nowrap cursor-pointer">
           
           <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -120,12 +142,12 @@ useEffect(()=>{
         <DropdownMenuLabel>{volume?.volumeTitle}</DropdownMenuLabel>
         
           <DropdownMenuItem onClick={()=>router.push(`/playground/${volume._id}`)}>
-         <h3 className='w-full flex gap-1 items-center hover:text-green-500 '><Eye size={18}/>View Volume</h3>  
+         <h3 className='w-full cursor-pointer flex gap-1 items-center hover:text-green-500  '><Eye size={18}/>View Volume</h3>  
           </DropdownMenuItem>
           <DropdownMenuItem>
-         <h3 className='w-full flex gap-1 items-center hover:text-red-500 '><Trash size={18}/>Delete</h3>  
+         <h3 className='w-full flex gap-1 items-center hover:text-red-500 cursor-pointer ' onClick={()=>deleteVolume(volume._id)}><Trash size={18}/>Delete</h3>  
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem title='Currently Not Available' className='cursor-not-allowed'>
            <Settings/> Settings
           </DropdownMenuItem>
        
