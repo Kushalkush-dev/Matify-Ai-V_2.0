@@ -5,7 +5,7 @@ import Editor from '@/app/_components/Editor'
 import PlaygroundHeader from '@/app/_components/PlaygroundHeader'
 import { api } from '@/convex/_generated/api'
 import { useConvex } from 'convex/react'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { aiSolution,aiGenerating } from '@/app/_context/Volumescontext';
 
@@ -24,6 +24,8 @@ const page = ({params}:any) => {
   const [aianswer,setaianswer]=useState<any>('')
 
   const [isCalculating, setisCalculating] = useState<boolean>(false)
+
+
 
 
 

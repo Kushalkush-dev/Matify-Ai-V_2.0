@@ -1,21 +1,22 @@
 import React, { useContext, useEffect } from 'react';
 import { Bot, Copy, Calculator, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { aiSolution } from '../_context/Volumescontext';
+import { aiGenerating, aiSolution } from '../_context/Volumescontext';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 
 
 interface AIOutputProps {
   output?: string;
-  isGenerating?: boolean;
+  isCalculating?: boolean;
 }
 
-const AIOutputDisplay = ({ output, isGenerating = false }: AIOutputProps) => {
+const AIOutputDisplay = () => {
 
 
   const {aianswer,setaianswer}=useContext(aiSolution)
 
+  const {isCalculating}=useContext(aiGenerating)
 
   useEffect(()=>{
     console.log("AI Answer updated:", aianswer);
@@ -52,17 +53,14 @@ const AIOutputDisplay = ({ output, isGenerating = false }: AIOutputProps) => {
       <div className="relative flex-1 p-4 overflow-y-auto h-full bg-white custom-scrollbar">
         {aianswer ? (
           <div className="prose prose-stone prose-sm max-w-none flex justify-center h-full items-center">
-            {/* Using whitespace-pre-wrap to preserve formatting. 
-              If your mathematical aianswer uses LaTeX (e.g. $E=mc^2$), 
-              you might want to wrap this later with a library like 'react-latex' or 'katex'.
-            */}
+           
             <p className="text-3xl items-start  text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
               <Latex>{aianswer}</Latex>
             </p>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-stone-400 gap-2">
-            {isGenerating ? (
+            {isCalculating ? (
                <>
                  <Loader2 className="w-6 h-6 animate-spin text-emerald-500" />
                  <span className="text-xs font-medium text-stone-500">Calculating...</span>
