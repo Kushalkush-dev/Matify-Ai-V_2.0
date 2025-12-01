@@ -20,7 +20,7 @@ useEffect(()=>{
 
 
 
-    <Header/>
+    <Header />
     <Hero/>
   
   </div>
