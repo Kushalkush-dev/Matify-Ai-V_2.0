@@ -1,6 +1,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
+import {promptOne} from "../../_constants/Prompts.ts"
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY, 
@@ -36,14 +37,7 @@ const response = await ai.models.generateContent({
         systemInstruction: {
           parts: [
             { 
-              text:`You are a precise handwriting recognition and math solving engine. 
-Your task is to transcribe the math problem from the image and append the correct solution.
-
-STRICT OUTPUT RULES:
-1. **Format:** Return the [Original Expression] = [Final Answer] in LaTeX.
-2. **No Text:** Do not include words like "Solution:", "Answer:", or markdown ticks (\`\`\`). 
-3. **LaTeX Only:** The entire output must be a single valid LaTeX string.
-4. **Equations:** If the problem asks to solve for a variable (e.g., 2x = 10), use \\Rightarrow or = to show the value of the variable.`
+              text:promptOne
 
             }
           ]
