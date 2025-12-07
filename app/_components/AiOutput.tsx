@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { aiGenerating, aiSolution } from '../_context/Volumescontext';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
+import { BlockMath } from 'react-katex';
 
 
 interface AIOutputProps {
@@ -19,7 +20,7 @@ const AIOutputDisplay = () => {
   const {isCalculating}=useContext(aiGenerating)
 
   useEffect(()=>{
-    console.log("AI Answer updated:", aianswer);
+    console.log(aianswer);
   },[aianswer])
   
   const copyToClipboard = () => {
@@ -54,9 +55,9 @@ const AIOutputDisplay = () => {
         {aianswer ? (
           <div className="prose prose-stone prose-sm max-w-none flex justify-center h-full items-center">
            
-            <p className="text-3xl items-start  text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
-              <Latex>{aianswer}</Latex>
-            </p>
+            <div className="text-3xl items-start overflow-x-auto  text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
+             <BlockMath  math={aianswer.directsolution} />
+            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-stone-400 gap-2">

@@ -94,8 +94,8 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
        
         const data = await response.json();
         console.log("AI Solution:", data);
-        setlatexSolution(data.solution)
-        setaianswer(data.solution)
+        setlatexSolution(data)
+        setaianswer(data)
         setisCalculating(false)
 
         

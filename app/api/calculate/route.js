@@ -1,7 +1,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
-import {promptOne} from "../../_constants/Prompts.ts"
+import {promptOne, promptWithDetailedSteps} from "../../_constants/Prompts.ts"
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY, 
@@ -37,7 +37,7 @@ const response = await ai.models.generateContent({
         systemInstruction: {
           parts: [
             { 
-              text:promptOne
+              text:promptWithDetailedSteps
 
             }
           ]
@@ -67,7 +67,7 @@ const response = await ai.models.generateContent({
     return NextResponse.json({ message: "Error generating AI response" }, { status: 500 });
   }
 
-  return NextResponse.json({ solution: text }, { status: 200 });
+  return NextResponse.json(  JSON.parse(text)   , { status: 200 });
    
   } catch (error) {
 
