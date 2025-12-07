@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Bot, Copy, Calculator, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { aiGenerating, aiSolution } from '../_context/Volumescontext';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import { BlockMath } from 'react-katex';
+import { Button } from '@/components/ui/button';
 
 
 interface AIOutputProps {
@@ -18,6 +19,9 @@ const AIOutputDisplay = () => {
   const {aianswer,setaianswer}=useContext(aiSolution)
 
   const {isCalculating}=useContext(aiGenerating)
+
+  const [isDetailedOutput, setisDetailedOutput] = useState<boolean>(false)
+
 
   useEffect(()=>{
     console.log(aianswer);
@@ -38,7 +42,21 @@ const AIOutputDisplay = () => {
             <Bot className="w-4 h-4 text-emerald-600" />
           </div>
           <span className="text-sm font-medium text-stone-700">AI Math Assistant</span>
+
+           <div className='flex ml-3 gap-4 '>
+          <Button onClick={()=>setisDetailedOutput(false)}>
+            Direct Solution
+          </Button>
+
+          <Button onClick={()=>setisDetailedOutput(true)}>
+            Detailed Solution
+          </Button>
         </div>
+
+        </div>
+
+
+       
 
         <button 
           onClick={copyToClipboard}
@@ -56,7 +74,7 @@ const AIOutputDisplay = () => {
           <div className="prose prose-stone prose-sm max-w-none flex justify-center h-full items-center">
            
             <div className="text-3xl items-start overflow-x-auto  text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
-             <BlockMath  math={aianswer.directsolution} />
+             <BlockMath  math={aianswer && isDetailedOutput ? aianswer?.detailedsolution:aianswer?.directsolution} />
             </div>
           </div>
         ) : (
