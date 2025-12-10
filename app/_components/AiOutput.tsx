@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Bot, Copy, Calculator, Loader2 } from 'lucide-react';
+import { Bot, Copy, Calculator, Loader2, LucideChartBarDecreasing, LucideSeparatorHorizontal, SuperscriptIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { aiGenerating, aiSolution } from '../_context/Volumescontext';
 import 'katex/dist/katex.min.css';
@@ -36,7 +36,7 @@ const AIOutputDisplay = () => {
   return (
     <div className="flex flex-col h-full w-full bg-white rounded-lg border border-stone-200 overflow-hidden shadow-sm">
       {/* Header Section */}
-      <div className="flex items-center justify-between px-4 py-2 bg-stone-50 border-b border-stone-200">
+      <div className="flex items-center justify-between px-4 py-2 bg-stone-100 border-b border-stone-200">
         <div className="flex items-center gap-2">
           <div className="p-1 bg-emerald-100 rounded-md">
             <Bot className="w-4 h-4 text-emerald-600" />
@@ -44,12 +44,18 @@ const AIOutputDisplay = () => {
           <span className="text-sm font-medium text-stone-700">AI Math Assistant</span>
 
            <div className='flex ml-3 gap-4 '>
-          <Button onClick={()=>setisDetailedOutput(false)}>
-            Direct Solution
+          <Button className={`${!isDetailedOutput ? "bg-[#4871DE] text-white":" bg-white text-emerald-600 border-2 border-[#4871DE]"}  active:scale-95 
+           transition-colors hover:bg-[#4871DE] hover:text-white shadow-2xl`}
+           
+           onClick={()=>setisDetailedOutput(false)}>
+            Direct Solution <SuperscriptIcon/>
           </Button>
 
-          <Button onClick={()=>setisDetailedOutput(true)}>
-            Detailed Solution
+          <Button className={`${isDetailedOutput ? "bg-[#2AB0BB] text-white":"bg-white text-emerald-600 border-2 border-[#2AB0BB]" }  active:scale-95  transition-colors 
+           hover:bg-[#2AB0BB] hover:font-bold hover:text-white shadow-2xl`}
+           
+           onClick={()=>setisDetailedOutput(true)}>
+            Detailed Solution <LucideSeparatorHorizontal />
           </Button>
         </div>
 
@@ -73,7 +79,7 @@ const AIOutputDisplay = () => {
         {aianswer ? (
           <div className="prose prose-stone prose-sm max-w-none flex justify-center h-full items-center">
            
-            <div className="text-3xl items-start overflow-x-auto  text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
+            <div className="text-3xl items-start overflow-x-auto   text-stone-800 leading-relaxed whitespace-pre-wrap font-medium">
              <BlockMath  math={aianswer && isDetailedOutput ? aianswer?.detailedsolution:aianswer?.directsolution} />
             </div>
           </div>
