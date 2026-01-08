@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { aiGenerating, aiSolution } from '../_context/Volumescontext';
 
 
-const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
+const Canvas = ({ saveClick, params, volumeData, calculateClick }: any) => {
 
 
 
@@ -25,22 +25,22 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
   const [latexSolution, setlatexSolution] = useState<any>()
 
 
-  const {aianswer,setaianswer}=useContext(aiSolution)
+  const { aianswer, setaianswer } = useContext(aiSolution)
 
-  const {isCalculating,setisCalculating}=useContext(aiGenerating)
+  const { isCalculating, setisCalculating } = useContext(aiGenerating)
 
-  const captureCanvasImage=async()=>{
-    if(!excalidrawAPI)return null;
+  const captureCanvasImage = async () => {
+    if (!excalidrawAPI) return null;
 
 
     // 1. Get the current image/state of excalidraw
-    
+
     const elements = excalidrawAPI.getSceneElements();
     const appState = excalidrawAPI.getAppState();
     const files = excalidrawAPI.getFiles();
 
     // 2. Generate the Blobimage which removes unwanted grids and mistakes and returns a plain canvas with user drawn data (Image file)
-    
+
     const blob = await exportToBlob({
       elements,
       appState: {
@@ -57,11 +57,11 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
     //Convert blob image to base64 string 
 
     return new Promise((resolve) => {
-      const reader=new FileReader()
+      const reader = new FileReader()
       reader.readAsDataURL(blob)
-      reader.onloadend=()=>{
-        const base64Image=reader.result;
-        console.log("Base64 image",base64Image);
+      reader.onloadend = () => {
+        const base64Image = reader.result;
+        console.log("Base64 image", base64Image);
         setcapturedImage(base64Image)
         resolve(base64Image)
       }
@@ -74,58 +74,64 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
 
 
 
-  const AiResponse=async()=>{
-    if(!excalidrawAPI) return;
+  const AiResponse = async () => {
+    if (!excalidrawAPI) return;
 
-    
+
     try {
       setisCalculating(true)
       const base64Image = await captureCanvasImage()
-      const response =await fetch('/api/calculate',{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json"
+      const response = await fetch('/api/calculate', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
         },
-        body:JSON.stringify({image:base64Image})
+        body: JSON.stringify({ image: base64Image })
       })
       console.log(response);
-      
-      if(response.ok){
-       
+
+      if (response.ok) {
+
         const data = await response.json();
         console.log("AI Solution:", data);
         setlatexSolution(data)
         setaianswer(data)
         setisCalculating(false)
 
-        
+
+      }else{
+        const errorData = await response.json();
+        const errorMessage = errorData?.message || "Failed to generate AI solution";
+        toast.error(errorMessage);
+        setisCalculating(false)
       }
 
     } catch (error) {
-      console.log("Error in AI response",error);
-      
+      console.log("Error in AI response", error);
+      setisCalculating(false)
+      toast.error("Error generating AI solution")
     }
 
   }
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     setaianswer(latexSolution)
 
-  },[latexSolution])
+  }, [latexSolution])
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(!params || !canvasData) return;
+    if (!params || !canvasData) return;
     console.log(capturedImage);
-    
+
     AiResponse()
 
 
-  },[calculateClick])
+  }, [calculateClick])
 
 
 
@@ -167,7 +173,7 @@ const Canvas = ({ saveClick, params, volumeData,calculateClick }: any) => {
   return (
 
     <div className='w-full h-[550px]'  >
-      {volumeData && <Excalidraw excalidrawAPI={(api)=>setexcalidrawAPI(api)}  theme='light' initialData={{ elements: volumeData?.whiteboard && JSON.parse(volumeData?.whiteboard) }}
+      {volumeData && <Excalidraw excalidrawAPI={(api) => setexcalidrawAPI(api)} theme='light' initialData={{ elements: volumeData?.whiteboard && JSON.parse(volumeData?.whiteboard) }}
         onChange={(excalidrawElements, appState, files) => setcanvasData(excalidrawElements)
         }
 

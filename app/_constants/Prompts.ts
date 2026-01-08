@@ -25,6 +25,5 @@ STRICT OUTPUT RULES:
 Example Output Format:
 {
   "directsolution": "x = 5",
-  "detailedsolution": "\\text{Subtract 3 from both sides:} \\\\ x + 3 - 3 = 8 - 3 \\\\ \\text{Therefore:} \\\\ x = 5"
+  "detailedsolution": " step 1 : \\text{Subtract 3 from both sides:} step 2: \\\\ x + 3 - 3 = 8 - 3  step 3: \\\\ \\text{Therefore:} \\\\ x = 5"
 }   `
-

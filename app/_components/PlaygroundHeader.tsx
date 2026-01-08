@@ -12,7 +12,7 @@ const PlaygroundHeader = ({onSave,onCalculate}:any) => {
       <Image src={"/logoo.png"} alt='logo' width={50} height={51} />
 
       <div className=' flex gap-4'>
-      <Button disabled={isCalculating} onClick={()=>onCalculate()} className='bg-green-600'>{isCalculating ? <Loader2 className='animate-spin'/> :<> Calculate <Brain/></> }  </Button>
+      <Button disabled={isCalculating} onClick={()=>onCalculate()} className='bg-green-600'>{isCalculating ? <><Loader2 className='animate-spin'/></> :<> Calculate <Brain/></> }  </Button>
 
       <Button  onClick={()=>onSave()} className='bg-yellow-600'>SAVE <Save/></Button>
 
