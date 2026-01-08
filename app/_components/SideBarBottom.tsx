@@ -142,7 +142,7 @@ const createVolume=async()=>{
     <div className='flex flex-col gap-2 p-3 '>
       
     {menus.map((menu,idx)=>(
-      <div key={idx} onClick={()=>menu.path && router.push(menu.path)} className={` ${menu.title==="GitHub" && 'hover:bg-black hover:text-white'}  cursor-pointer flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2   `}>
+      <div key={idx} onClick={()=>menu.path && router.push(menu.path)} className={` ${menu.title==="GitHub" && 'hover:bg-slate-950 hover:text-white'}  cursor-pointer flex hover:bg-gray-500/20 p-2 rounded-md  items-center gap-2   `}>
         <menu.icon size={20}/>
         <h2 className='text-sm'>{menu?.title}</h2>
       </div>

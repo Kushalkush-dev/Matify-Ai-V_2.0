@@ -32,7 +32,7 @@ export async function POST(request) {
 
 
 const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-lite', 
+      model: 'gemini-2.5-flash', 
    
       config: { 
         responseMimeType:"application/json",
@@ -101,6 +101,9 @@ const response = await ai.models.generateContent({
     console.log("Error in api/calculate", error);
  // Handle API overload (503) errors specifically
     if (error.status === 503 || error.code === 'UNAVAILABLE') {
+
+      
+
       return NextResponse.json(
         { message: "The AI model is currently overloaded. Please try again in a moment." },
         { status: 503 }
